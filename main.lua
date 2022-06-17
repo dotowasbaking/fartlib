@@ -51,7 +51,7 @@ function fartlib.new(options)
 
     self._baseBacking = Drawing.new("Square", {
         Color = Color3.fromRGB();
-        Size = Vector2.new(228, 48);
+        Size = Vector2.new(226, 46);
         Position = Vector2.new(68, 98);
         ZIndex = UI_BASE_LAYER + 0;
         Filled = true;
@@ -149,7 +149,7 @@ function fartlib:Header(headerOptions)
         library._totalElements += 1
         library._elements[#library._elements + 1] = element
         library._baseWindow.Size = Vector2.new(220, element.Position.Y + 22 - library._baseWindow.Position.Y)
-        library._baseBacking.Size = library._baseWindow.Size + Vector2.new(2, 2)
+        library._baseBacking.Size = library._baseWindow.Size + Vector2.new(4, 4)
 
         if library._totalElements == 1 then
             library._selectedElement = element
