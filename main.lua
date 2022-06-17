@@ -101,13 +101,13 @@ end
 function fartlib:_bindAction(actionName, callback, ...)
     self._boundActionNames[#self._boundActionNames + 1] = actionName
 
-    contextActionService:BindAction(actionName, callback, false, ...)
+    contextActionService:BindCoreAction(actionName, callback, false, ...)
 end
 
 function fartlib:_unbindAction(actionName)
     table.remove(self._boundActionNames, table.find(self._boundActionNames, actionName))
 
-    contextActionService:UnbindAction(actionName)
+    contextActionService:UnbindCoreAction(actionName)
 end
 
 function fartlib:_getNextElementPosition()
@@ -480,7 +480,7 @@ function fartlib:Destroy()
     end
 
     for _, v in ipairs(self._boundActionNames) do
-        contextActionService:UnbindAction(v)
+        contextActionService:UnbindCoreAction(v)
     end
 
     for _, v in ipairs(Drawing.Drawings) do
