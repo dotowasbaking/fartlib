@@ -51,11 +51,11 @@ function fartlib.new(options)
 
     self._baseBacking = Drawing.new("Square", {
         Color = Color3.fromRGB();
-        Size = Vector2.new(222, 42);
-        Position = Vector2.new(69, 99);
+        Size = Vector2.new(224, 44);
+        Position = Vector2.new(68, 98);
         ZIndex = UI_BASE_LAYER + 0;
         Filled = true;
-        Transparency = 0.9;
+        Transparency = 0.7;
     })
 
     self._accentLine = Drawing.new("Square", {
