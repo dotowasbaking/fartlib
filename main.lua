@@ -60,7 +60,7 @@ function fartlib.new(options)
 
     self._accentLine = Drawing.new("Square", {
         Color = Color3.new(1, 0, 0);
-        Size = Vector2.new(220, 1);
+        Size = Vector2.new(220, 2);
         Position = self._baseWindow.Position + Vector2.new(0, 30);
         ZIndex = UI_BASE_LAYER + 3;
         Filled = true;
