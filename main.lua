@@ -82,7 +82,7 @@ function fartlib.new(options)
         Transparency = 0;
     })
 
-    local accentHue = 0; self:_addConnection(runService.Heartbeat:Connect(function()
+    local accentHue = 0; self:AddConnection(runService.Heartbeat:Connect(function()
         accentHue %= 1
         self._accentLine.Color = Color3.fromHSV(accentHue, 1, 1)
 
@@ -92,10 +92,19 @@ function fartlib.new(options)
     return self
 end
 
-function fartlib:_addConnection(signal)
+function fartlib:AddConnection(signal)
     self._connections[#self._connections + 1] = signal
 
     return signal
+end
+
+function fartlib:RemoveConnection(signal)
+    local signalIndex = table.find(self._connections, signal)
+    signal:Disconnect()
+
+    if signalIndex then
+        self._connections[signalIndex] = nil
+    end
 end
 
 function fartlib:_bindAction(actionName, callback, ...)
