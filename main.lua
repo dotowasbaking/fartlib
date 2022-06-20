@@ -182,6 +182,10 @@ function fartlib:Header(headerOptions)
             library:_bindAction(
                 "__fartlibArrowControl",
                 function(_, inputState, inputObject)
+                    if not library._visible then
+                        return
+                    end
+
                     if inputState == Enum.UserInputState.Begin then
                         if inputObject.KeyCode == Enum.KeyCode.Down or inputObject.KeyCode == Enum.KeyCode.Up then
                             selectNext(inputObject)
@@ -225,6 +229,10 @@ function fartlib:Header(headerOptions)
         library:_bindAction(
             "__fartlibEnterControl",
             function(_, inputState)
+                if not library._visible then
+                    return
+                end
+
                 if inputState == Enum.UserInputState.Begin then
                     if library._selectedElement.EnterCallback then
                         library._selectedElement.EnterCallback()
@@ -481,6 +489,18 @@ function fartlib:Initialize()
             end
         end)
     end
+end
+
+function fartlib:SetVisible(state)
+    self._visible = state
+
+    for _, v in ipairs(Drawing.Drawings) do
+        v.Visible = state
+    end
+end
+
+function fartlib:GetVisible()
+    return self._visible
 end
 
 function fartlib:Destroy()
