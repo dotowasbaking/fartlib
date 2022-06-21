@@ -97,6 +97,10 @@ function fartlib.new(options)
     return self
 end
 
+function fartlib:GetZIndex()
+    return UI_BASE_LAYER
+end
+
 function fartlib:BindToChroma(func)
     self._chromaBind = func
 end
