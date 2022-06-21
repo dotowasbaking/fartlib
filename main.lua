@@ -82,7 +82,7 @@ function fartlib.new(options)
         Transparency = 0;
     })
 
-    local accentHue = 0; self:AddConnection(runService.Heartbeat:Connect(function()
+    local accentHue = 0; self:AddConnection(runService.Heartbeat:Connect(function(dt)
         accentHue %= 1
         local chromaColor = Color3.fromHSV(accentHue, 1, 1)
         self._accentLine.Color = chromaColor
@@ -91,7 +91,7 @@ function fartlib.new(options)
             self._chromaBind(chromaColor)
         end
 
-        accentHue += 0.0005
+        accentHue += 0.05 * dt
     end))
 
     return self
