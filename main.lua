@@ -344,7 +344,7 @@ function fartlib:Header(headerOptions)
             local originalValue = sliderBase._value
 
             sliderBase._value = math.clamp(sliderBase._value + (sliderOptions.Increment * (direction == 0 and -1 or 1)), sliderOptions.Minimum, sliderOptions.Maximum)
-            numberDisplay.Text = "["..sliderBase._value..(sliderOptions.Measurement or "").."]"
+            numberDisplay.Text = "["..(math.round(sliderBase._value * 100)/100)..(sliderOptions.Measurement or "").."]"
             numberDisplay.Position = Vector2.new(library._baseWindow.Position.X + library._baseWindow.Size.X - 10, sliderPosition.Y) + Vector2.new(-numberDisplay.TextBounds.X, 0)
 
             if sliderBase._value ~= originalValue then
