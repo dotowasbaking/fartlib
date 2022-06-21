@@ -435,6 +435,8 @@ function fartlib:Header(headerOptions)
                             if keybindOptions.Callback then
                                 keybindOptions.Callback()
                             end
+
+                            return keybindOptions.PassInput and Enum.ContextActionResult.Pass or Enum.ContextActionResult.Sink
                         end
                     end,
                     inputObject
