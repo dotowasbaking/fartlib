@@ -84,12 +84,21 @@ function fartlib.new(options)
 
     local accentHue = 0; self:AddConnection(runService.Heartbeat:Connect(function()
         accentHue %= 1
-        self._accentLine.Color = Color3.fromHSV(accentHue, 1, 1)
+        local chromaColor = Color3.fromHSV(accentHue, 1, 1)
+        self._accentLine.Color = chromaColor
+
+        if self._chromaBind then
+            self._chromaBind(chromaColor)
+        end
 
         accentHue += 0.0005
     end))
 
     return self
+end
+
+function fartlib:BindToChroma(func)
+    self._chromaBind = func
 end
 
 function fartlib:AddConnection(signal)
