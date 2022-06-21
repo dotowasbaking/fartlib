@@ -315,7 +315,7 @@ function fartlib:Header(headerOptions)
         })
 
         local numberDisplay; numberDisplay = Drawing.new("Text", {
-            Color = sliderOptions.Enabled and Color3.fromRGB(70, 180, 70) or Color3.fromRGB(30, 100, 170);
+            Color = Color3.fromRGB(30, 100, 170);
             Position = Vector2.new(library._baseWindow.Position.X + library._baseWindow.Size.X - 10, sliderPosition.Y);
             Text = "["..sliderOptions.Value..(sliderOptions.Measurement or "").."]";
             Size = 13;
