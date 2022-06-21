@@ -452,6 +452,10 @@ function fartlib:Header(headerOptions)
                         if inputState == Enum.UserInputState.Begin then
                             keybindBase:_bindKey(inputObject.KeyCode)
 
+                            if keybindOptions.ChangedCallback then
+                                keybindOptions.ChangedCallback(inputObject.KeyCode)
+                            end
+
                             library:_unbindAction("__fartlibBindKey")
                             binding = false
                         end
