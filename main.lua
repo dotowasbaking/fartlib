@@ -496,6 +496,14 @@ function fartlib:Initialize()
     end
 end
 
+function fartlib:AddTask(...)
+    maid:AddTask(...)
+end
+
+function fartlib:CleanTask(...)
+    maid:CleanTask(...)
+end
+
 function fartlib:SetVisible(state)
     self._visible = state
 
@@ -507,9 +515,6 @@ end
 function fartlib:GetVisible()
     return self._visible
 end
-
-fartlib.AddTask = maid.AddTask
-fartlib.RemoveTask = maid.RemoveTask
 
 function fartlib:Destroy()
     maid:CleanUp()
