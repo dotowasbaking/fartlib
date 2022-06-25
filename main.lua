@@ -1,6 +1,7 @@
 local f_require = loadfile("f_require.lua")()
 local utils = f_require("f_utils.lua")
 local Drawing = f_require("drawingWrapper.lua")
+local maid = f_require("maid.lua").new()
 
 local runService = game:service("RunService")
 local userInputService = game:service("UserInputService")
@@ -82,7 +83,7 @@ function fartlib.new(options)
         Transparency = 0;
     })
 
-    local accentHue = 0; self:AddConnection(runService.Heartbeat:Connect(function(dt)
+    local accentHue = 0; maid:AddTask(runService.Heartbeat:Connect(function(dt)
         accentHue %= 1
         local chromaColor = Color3.fromHSV(accentHue, 1, 1)
         self._accentLine.Color = chromaColor
@@ -103,21 +104,6 @@ end
 
 function fartlib:BindToChroma(func)
     self._chromaBind = func
-end
-
-function fartlib:AddConnection(signal)
-    self._connections[#self._connections + 1] = signal
-
-    return signal
-end
-
-function fartlib:RemoveConnection(signal)
-    local signalIndex = table.find(self._connections, signal)
-    signal:Disconnect()
-
-    if signalIndex then
-        self._connections[signalIndex] = nil
-    end
 end
 
 function fartlib:_bindAction(actionName, callback, ...)
@@ -522,10 +508,11 @@ function fartlib:GetVisible()
     return self._visible
 end
 
+fartlib.AddTask = maid.AddTask
+fartlib.RemoveTask = maid.RemoveTask
+
 function fartlib:Destroy()
-    for _, v in ipairs(self._connections) do
-        v:Disconnect()
-    end
+    maid:CleanUp()
 
     for _, v in ipairs(self._boundActionNames) do
         contextActionService:UnbindCoreAction(v)
