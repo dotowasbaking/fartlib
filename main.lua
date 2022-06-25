@@ -517,7 +517,7 @@ function fartlib:GetVisible()
 end
 
 function fartlib:Destroy()
-    maid:CleanUp()
+    maid:Destroy()
 
     for _, v in ipairs(self._boundActionNames) do
         contextActionService:UnbindCoreAction(v)
