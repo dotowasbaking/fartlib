@@ -497,11 +497,11 @@ function fartlib:Initialize()
 end
 
 function fartlib:AddTask(...)
-    maid:AddTask(...)
+    return maid:AddTask(...)
 end
 
 function fartlib:CleanTask(...)
-    maid:CleanTask(...)
+    return maid:CleanTask(...)
 end
 
 function fartlib:SetVisible(state)
