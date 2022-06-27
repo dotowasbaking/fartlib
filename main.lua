@@ -33,6 +33,9 @@ fartlib.__index = fartlib
 function fartlib.new(options)
     local self = setmetatable({}, fartlib)
 
+    self._configName = "__fartlib.cfg"
+    self._pointerRegistry = {}
+
     self._connections = {}
     self._headerContainer = {}
     self._boundActionNames = {}
@@ -131,6 +134,30 @@ function fartlib:_getNextElementPosition()
         end
     else
         return self._baseWindow.Position + Vector2.new(10, 38)
+    end
+end
+
+function fartlib:SaveConfig()
+    local pointerDictionary = {}
+
+    for pointer, element in ipairs(self._pointerRegistry) do
+        pointerDictionary[pointer] = element:GetValue()
+    end
+
+    writefile(self._configName, ("return %s"):format(utils:tableToString(pointerDictionary)))
+end
+
+function fartlib:LoadConfig()
+    local configTable = loadfile(self._configName)()
+
+    for pointer, value in pairs(configTable) do
+        local element = self._pointerRegistry[pointer]
+
+        if element then
+            element:SetValue(value)
+        -- else
+        --     notify here
+        end
     end
 end
 
@@ -251,6 +278,10 @@ function fartlib:Header(headerOptions)
         toggleBase.Position = titlePosition
         toggleBase._state = toggleOptions.Enabled or false
 
+        if toggleOptions.Pointer then
+            self._pointerRegistry[toggleOptions.Pointer] = toggleBase
+        end
+
         Drawing.new("Text", {
             Color = Color3.new(1, 1, 1);
             Position = titlePosition;
@@ -310,6 +341,10 @@ function fartlib:Header(headerOptions)
         sliderBase.Position = sliderPosition
         sliderBase._value = sliderOptions.Value
 
+        if sliderOptions.Pointer then
+            self._pointerRegistry[sliderOptions.Pointer] = sliderBase
+        end
+
         Drawing.new("Text", {
             Color = Color3.new(1, 1, 1);
             Position = sliderPosition;
@@ -333,10 +368,11 @@ function fartlib:Header(headerOptions)
         numberDisplay.Position = numberDisplay.Position + Vector2.new(-numberDisplay.TextBounds.X, 0)
 
         sliderBase.ArrowCallback = function(direction)
-            sliderBase:SetValue(math.clamp(sliderBase._value + (sliderOptions.Increment * (direction == 0 and -1 or 1)), sliderOptions.Minimum, sliderOptions.Maximum))
+            sliderBase:SetValue(sliderBase._value + (sliderOptions.Increment * (direction == 0 and -1 or 1)))
         end
 
         function sliderBase:SetValue(value)
+            value = math.clamp(value, sliderOptions.Minimum, sliderOptions.Maximum)
             local originalValue = self._value
             self._value = value
 
@@ -389,6 +425,10 @@ function fartlib:Header(headerOptions)
 
         keybindBase.Position = labelPosition
         keybindBase._value = keybindOptions.Keybind
+
+        if keybindOptions.Pointer then
+            self._pointerRegistry[keybindOptions.Pointer] = keybindBase
+        end
 
         Drawing.new("Text", {
             Color = Color3.new(1, 1, 1);
