@@ -274,25 +274,31 @@ function fartlib:Header(headerOptions)
         stateDisplay.Position = stateDisplay.Position + Vector2.new(-stateDisplay.TextBounds.X, 0)
 
         local function changeState()
-            toggleBase._state = not toggleBase._state
-
-            if toggleBase._state then
-                stateDisplay.Text = "[on]"
-                stateDisplay.Color = Color3.fromRGB(70, 180, 70)
-            else
-                stateDisplay.Text = "[off]"
-                stateDisplay.Color = Color3.fromRGB(180, 70, 70)
-            end
-
-            stateDisplay.Position = Vector2.new(library._baseWindow.Position.X + library._baseWindow.Size.X - 10, titlePosition.Y) + Vector2.new(-stateDisplay.TextBounds.X, 0)
-
-            if toggleOptions.Callback then
-                toggleOptions.Callback(toggleBase._state)
-            end
+            toggleBase:SetValue(not toggleBase._state)
         end
 
         toggleBase.ArrowCallback = changeState
         toggleBase.EnterCallback = changeState
+
+        function toggleBase:SetValue(value)
+            local originalValue = self._state
+            self._state = value
+
+            stateDisplay.Text = value and "[on]" or "[off]"
+            stateDisplay.Color = value and Color3.fromRGB(70, 180, 70) or Color3.fromRGB(180, 70, 70)
+
+            stateDisplay.Position = Vector2.new(library._baseWindow.Position.X + library._baseWindow.Size.X - 10, titlePosition.Y) + Vector2.new(-stateDisplay.TextBounds.X, 0)
+
+            if originalValue ~= value then
+                if toggleOptions.Callback then
+                    toggleOptions.Callback(self._state)
+                end
+            end
+        end
+
+        function toggleBase:GetValue()
+            return self._state
+        end
 
         return toggleBase
     end
@@ -327,17 +333,25 @@ function fartlib:Header(headerOptions)
         numberDisplay.Position = numberDisplay.Position + Vector2.new(-numberDisplay.TextBounds.X, 0)
 
         sliderBase.ArrowCallback = function(direction)
-            local originalValue = sliderBase._value
+            sliderBase:SetValue(math.clamp(sliderBase._value + (sliderOptions.Increment * (direction == 0 and -1 or 1)), sliderOptions.Minimum, sliderOptions.Maximum))
+        end
 
-            sliderBase._value = math.clamp(sliderBase._value + (sliderOptions.Increment * (direction == 0 and -1 or 1)), sliderOptions.Minimum, sliderOptions.Maximum)
-            numberDisplay.Text = "["..(math.round(sliderBase._value * 100)/100)..(sliderOptions.Measurement or "").."]"
+        function sliderBase:SetValue(value)
+            local originalValue = self._value
+            self._value = value
+
+            numberDisplay.Text = "["..(math.round(self._value * 100)/100)..(sliderOptions.Measurement or "").."]"
             numberDisplay.Position = Vector2.new(library._baseWindow.Position.X + library._baseWindow.Size.X - 10, sliderPosition.Y) + Vector2.new(-numberDisplay.TextBounds.X, 0)
 
-            if sliderBase._value ~= originalValue then
+            if self._value ~= originalValue then
                 if sliderOptions.Callback then
-                    sliderOptions.Callback(sliderBase._value)
+                    sliderOptions.Callback(self._value)
                 end
             end
+        end
+
+        function sliderBase:GetValue()
+            return self._value
         end
 
         return sliderBase
@@ -374,7 +388,7 @@ function fartlib:Header(headerOptions)
         local keybindBase = {}
 
         keybindBase.Position = labelPosition
-        keybindBase._value = keybindOptions.Value
+        keybindBase._value = keybindOptions.Keybind
 
         Drawing.new("Text", {
             Color = Color3.new(1, 1, 1);
@@ -413,6 +427,7 @@ function fartlib:Header(headerOptions)
 
             if inputObject ~= nil and inputObject ~= Enum.KeyCode.Backspace then
                 binded = true
+                self._value = inputObject
 
                 library:_bindAction(
                     actionName,
@@ -432,6 +447,7 @@ function fartlib:Header(headerOptions)
                 keybindDisplay.Position = Vector2.new(library._baseWindow.Position.X + library._baseWindow.Size.X - 10, labelPosition.Y) + Vector2.new(-keybindDisplay.TextBounds.X, 0)
             else
                 library:_unbindAction(actionName)
+                self._value = nil
 
                 keybindDisplay.Text = "none"
                 keybindDisplay.Position = Vector2.new(library._baseWindow.Position.X + library._baseWindow.Size.X - 10, labelPosition.Y) + Vector2.new(-keybindDisplay.TextBounds.X, 0)
@@ -445,7 +461,7 @@ function fartlib:Header(headerOptions)
                 binding = true
 
                 keybindDisplay.Text = "..."
-                 keybindDisplay.Position = Vector2.new(library._baseWindow.Position.X + library._baseWindow.Size.X - 10, labelPosition.Y) + Vector2.new(-keybindDisplay.TextBounds.X, 0)
+                keybindDisplay.Position = Vector2.new(library._baseWindow.Position.X + library._baseWindow.Size.X - 10, labelPosition.Y) + Vector2.new(-keybindDisplay.TextBounds.X, 0)
 
                 library:_bindAction(
                     "__fartlibBindKey",
@@ -469,6 +485,16 @@ function fartlib:Header(headerOptions)
         if keybindOptions.Keybind then
             keybindBase:_bindKey(keybindOptions.Keybind)
         end
+
+        function keybindBase:SetValue(value)
+            self:_bindKey(value)
+        end
+
+        function keybindBase:GetValue()
+            return self._value
+        end
+
+        return keybindBase
     end
 
     library._headerContainer[#library._headerContainer + 1] = headerBase
