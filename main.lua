@@ -140,9 +140,14 @@ end
 function fartlib:SaveConfig()
     local pointerDictionary = {}
 
+    print("starting save")
+
     for pointer, element in pairs(self._pointerRegistry) do
+        warn("iteration", pointer, ":", element)
         pointerDictionary[pointer] = element:GetValue()
     end
+
+    print("finished serialization, wriring file")
 
     writefile(self._configName, ("return %s"):format(utils:tableToString(pointerDictionary)))
 end
