@@ -140,7 +140,7 @@ end
 function fartlib:SaveConfig()
     local pointerDictionary = {}
 
-    for pointer, element in ipairs(self._pointerRegistry) do
+    for pointer, element in pairs(self._pointerRegistry) do
         pointerDictionary[pointer] = element:GetValue()
     end
 
