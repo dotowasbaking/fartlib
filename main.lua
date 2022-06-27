@@ -279,7 +279,7 @@ function fartlib:Header(headerOptions)
         toggleBase._state = toggleOptions.Enabled or false
 
         if toggleOptions.Pointer then
-            self._pointerRegistry[toggleOptions.Pointer] = toggleBase
+            library._pointerRegistry[toggleOptions.Pointer] = toggleBase
         end
 
         Drawing.new("Text", {
@@ -342,7 +342,7 @@ function fartlib:Header(headerOptions)
         sliderBase._value = sliderOptions.Value
 
         if sliderOptions.Pointer then
-            self._pointerRegistry[sliderOptions.Pointer] = sliderBase
+            library._pointerRegistry[sliderOptions.Pointer] = sliderBase
         end
 
         Drawing.new("Text", {
@@ -427,7 +427,7 @@ function fartlib:Header(headerOptions)
         keybindBase._value = keybindOptions.Keybind
 
         if keybindOptions.Pointer then
-            self._pointerRegistry[keybindOptions.Pointer] = keybindBase
+            library._pointerRegistry[keybindOptions.Pointer] = keybindBase
         end
 
         Drawing.new("Text", {
