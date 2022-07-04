@@ -140,14 +140,9 @@ end
 function fartlib:SaveConfig()
     local pointerDictionary = {}
 
-    print("starting save")
-
     for pointer, element in pairs(self._pointerRegistry) do
-        warn("iteration", pointer, ":", element)
         pointerDictionary[pointer] = element:GetValue()
     end
-
-    print("finished serialization, wriring file")
 
     writefile(self._configName, ("return %s"):format(utils:tableToString(pointerDictionary)))
 end
@@ -383,7 +378,7 @@ function fartlib:Header(headerOptions)
 
             numberDisplay.Text = "["..(math.round(self._value * 100)/100)..(sliderOptions.Measurement or "").."]"
             numberDisplay.Position = Vector2.new(library._baseWindow.Position.X + library._baseWindow.Size.X - 10, sliderPosition.Y) + Vector2.new(-numberDisplay.TextBounds.X, 0)
-
+   
             if self._value ~= originalValue then
                 if sliderOptions.Callback then
                     sliderOptions.Callback(self._value)
