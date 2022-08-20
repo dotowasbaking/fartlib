@@ -33,6 +33,7 @@ fartlib.__index = fartlib
 
 function fartlib.new(options)
     local self = setmetatable({}, fartlib)
+    options = options or {}
 
     self._configName = "__fartlib.cfg"
     self._pointerRegistry = {}
