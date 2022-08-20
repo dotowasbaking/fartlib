@@ -1,11 +1,12 @@
-local f_require = loadfile("f_require.lua")()
-local utils = f_require("f_utils.lua")
-local Drawing = f_require("drawingWrapper.lua")
-local maid = f_require("maid.lua").new()
+local uRequire = loadstring(game:HttpGet("https://raw.githubusercontent.com/dotowasbaking/-/main/utilRequire.lua", true))()
 
-local runService = game:service("RunService")
-local userInputService = game:service("UserInputService")
-local contextActionService = game:service("ContextActionService")
+local utils = uRequire("miscUtils")
+local Drawing = uRequire("drawingWrapper")
+local maid = uRequire("maid").new()
+
+local runService = game:GetService("RunService")
+local userInputService = game:GetService("UserInputService")
+local contextActionService = game:GetService("ContextActionService")
 
 local shortenedInputNames = {["MouseButton1"] = "MB1", ["MouseButton2"] = "MB2", ["MouseButton3"] = "MB3", ["PageUp"] = "PUp", ["PageDown"] = "PDn", ["Home"] = "Hm", ["Delete"] = "Del", ["Insert"] = "Ins", ["LeftAlt"] = "LAlt", ["LeftControl"] = "LC", ["LeftShift"] = "LS", ["RightAlt"] = "RAlt", ["RightControl"] = "RC", ["RightShift"] = "RS", ["CapsLock"] = "Caps"}
 
